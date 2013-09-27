@@ -1,0 +1,91 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{648273A7-681F-42C2-AAB3-C683EC29D709}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>TokenAuthorization.Core</RootNamespace>
+    <AssemblyName>TokenAuthorization.Core</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Newtonsoft.Json, Version=4.5.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>bin\Debug\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Net" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Net.Http.Formatting, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
+    <Reference Include="System.Web.Http, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Account\AccessLevel.cs" />
+    <Compile Include="Account\UserRole.cs" />
+    <Compile Include="Attributes\TokenAuthenticationAttribute.cs" />
+    <Compile Include="Attributes\UserDataModificationActionFilter.cs" />
+    <Compile Include="Providers\CacheableTokenProvider.cs" />
+    <Compile Include="Fetchers\Data\BaseDataFetcher.cs" />
+    <Compile Include="Fetchers\Data\CacheableDataFetcher.cs" />
+    <Compile Include="Fetchers\Data\CookieDataFetcher.cs" />
+    <Compile Include="Fetchers\Data\FormDataFetcher.cs" />
+    <Compile Include="Caching\ICacheable.cs" />
+    <Compile Include="Fetchers\Data\IDataFetcher.cs" />
+    <Compile Include="Caching\NonCachedStrategy.cs" />
+    <Compile Include="Fetchers\Data\QueryStringDataFetcher.cs" />
+    <Compile Include="Fetchers\Token\CookieTokenFetcher.cs" />
+    <Compile Include="Fetchers\Token\FormDataTokenFetcher.cs" />
+    <Compile Include="Caching\IDataCacheStrategy.cs" />
+    <Compile Include="Fetchers\Token\ITokenFetcher.cs" />
+    <Compile Include="Caching\ITokenMetadataCacheStrategy.cs" />
+    <Compile Include="Fetchers\Token\QueryStringTokenFetcher.cs" />
+    <Compile Include="Caching\RouteCache.cs" />
+    <Compile Include="Caching\TokenCacheStrategy.cs" />
+    <Compile Include="Storage\InMemoryTokenStorage.cs" />
+    <Compile Include="Providers\ITokenProvider.cs" />
+    <Compile Include="Storage\ITokenStorage.cs" />
+    <Compile Include="Controllers\TokenAuthApiController.cs" />
+    <Compile Include="Configuration\TokenAuthConfiguration.cs" />
+    <Compile Include="TokenGenerators\Base64TokenGenerator.cs" />
+    <Compile Include="TokenGenerators\GuidTokenGenerator.cs" />
+    <Compile Include="TokenGenerators\ITokenGenerator.cs" />
+    <Compile Include="TokenMetadata.cs" />
+    <Compile Include="Account\UserMetadata.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
