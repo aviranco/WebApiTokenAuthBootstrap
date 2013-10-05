@@ -31,29 +31,107 @@
     <!-- MAIN CONTENT -->
     <div id="main_content_wrap" class="outer">
       <section id="main_content" class="inner">
-        <h3>
-<a name="token-based-user-authentication" class="anchor" href="#token-based-user-authentication"><span class="octicon octicon-link"></span></a>Token Based User Authentication</h3>
+        <h2>
+<a name="features" class="anchor" href="#features"><span class="octicon octicon-link"></span></a>Features</h2>
 
-<p>User Property inside the TokenAuthApiController (Id, Username, Role, LastAccess).</p>
+<p><strong>Token Based User Authentication</strong>
+User Property inside the TokenAuthApiController (Id, Username, Role, LastAccess).</p>
 
-<h3>
-<a name="token-based-user-authorization" class="anchor" href="#token-based-user-authorization"><span class="octicon octicon-link"></span></a><strong>Token Based User Authorization</strong>
-</h3>
+<p><strong>Token Based User Authorization</strong>
+TokenAuthorizeAttribute with Access Level - Public, User, Admin or Anonymous.</p>
 
-<p>TokenAuthorizeAttribute with Access Level - Public, User, Admin or Anonymous.</p>
+<p><strong>Built-in Functionality</strong>
+Login(), Logoff(), Error(), Unauthorized() Responses with various overloads.</p>
 
-<h3>
-<a name="built-in-functionality" class="anchor" href="#built-in-functionality"><span class="octicon octicon-link"></span></a><strong>Built-in Functionality</strong>
-</h3>
-
-<p>Login(), Logoff(), Error(), Unauthorized() Responses with various overloads.</p>
-
-<h3>
-<a name="shared-dynamic-object-betwen-client-and-server" class="anchor" href="#shared-dynamic-object-betwen-client-and-server"><span class="octicon octicon-link"></span></a><strong>Shared Dynamic Object Betwen Client and Server</strong>
-</h3>
-
-<p>UserData Property inside the TokenAuthApiController (Up to size of 4 KB storage).
+<p><strong>Shared Dynamic Object Betwen Client and Server</strong>
+UserData Property inside the TokenAuthApiController (Up to size of 4 KB storage).
 Great for caching data in the client side, especially for thin back-end applications like Single Page Applications.</p>
+
+<h2>
+<a name="getting-started" class="anchor" href="#getting-started"><span class="octicon octicon-link"></span></a>Getting Started</h2>
+
+<p>Install Package from Nuget console:
+<code>Install-Package WebApiTokenAuth</code></p>
+
+<p>Now, your controllers should inherit from <code>TokenAuthApiController</code> instead of the default ApiController,
+so you can access its extensions:</p>
+
+<ul>
+<li>Access to the properties <code>UserMetadata User</code> and <code>dynamic UserData</code>.</li>
+<li>Access following functions: <code>Login()</code>, <code>Logout()</code>, <code>Error()</code> and <code>Unauthorize()</code>.</li>
+</ul><p><strong>Note</strong></p>
+
+<p><em>In order to use the <code>UserData</code> dynamic object that enables client side caching using cookies,</em>
+<em>add the following line to the <code>Application_Start()</code> function inside the <code>Global.asax</code> file:</em>
+<em><code>GlobalConfiguration.Configuration.Filters.Add(new UserDataModificationActionFilter());</code></em></p>
+
+<h3>
+<a name="code-sample" class="anchor" href="#code-sample"><span class="octicon octicon-link"></span></a>Code Sample</h3>
+
+<p>Here I demonstrate the simplicity of using the <strong>WebApiTokenAuth</strong> package with Register,
+Login and Logout functionality.</p>
+
+<pre><code>/// &lt;summary&gt;
+/// Handles all the account related actions - user registration, login and logout.
+/// &lt;/summary&gt;
+public class AuthController : TokenAuthApiController
+{
+    // GET api/auth/login
+    [ActionName("login")]
+    [TokenAuthentication(AccessLevel.Anonymous)]
+    public HttpResponseMessage PostLogin([FromBody]LoginViewModel user)
+    {
+        // Input validaiton.
+        if (user == null || user.Username == null || user.Password == null)
+        {
+            return Error("Please enter username and password.");
+        }
+
+        // Retrieve the user data from the Data access layer.
+        IDal dal = new ProGamersDal();
+        var currentUser = dal.GetUser(user.Username, user.Password);
+
+        // If not match found - return error.
+        if (currentUser == null)
+        {
+            return Error("Bad username or password.");
+        }
+
+        // Cache username and user role at the client side as cookie - accessible by javascript at the client side as json object.
+        // Note this data is not secured since the user can access the cookie. Don't store any sensitive information there.
+        // In case you save login data in the client side as I did, Server-side validation is a MUST.
+        UserData.username = "Dgandalf";
+        UserData.role = (int) UserRole.User;
+
+        // Creates an access token for this user, stores it in the configured TokenStorage (By default use in-memory storage).
+        // You can set different TokenStorage at TokenAuthenticationConfiguration.TokenStorage in your Application_Start 
+        // function inside theg lobal.asax file. Additionally, sends cookie with the generated access token to the user.
+        return Login(1, "Dgandalf", UserRole.User);
+
+    }
+
+    // POST api/auth/logout
+    [ActionName("logout")]
+    [TokenAuthentication(AccessLevel.User)]
+    public HttpResponseMessage PostLogout()
+    {
+        // Deletes the token and user-data cookies with the generated access token to the user.
+        return Logout();
+    }
+
+    // POST api/auth/register
+    [ActionName("register")]
+    [TokenAuthentication(AccessLevel.Anonymous)]
+    public HttpResponseMessage PostRegister(User user)
+    {
+        // Handle registration data here.
+
+        // Returns OK response. You can also use Login() function instead, so the user will be logged in 
+        // automaticly after a successful registration.
+        return Ok();
+    }
+}
+</code></pre>
 
 <h3>
 <a name="support-or-contact" class="anchor" href="#support-or-contact"><span class="octicon octicon-link"></span></a>Support or Contact</h3>
@@ -71,7 +149,17 @@ Great for caching data in the client side, especially for thin back-end applicat
       </footer>
     </div>
 
-    
+              <script type="text/javascript">
+            var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+            document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+          </script>
+          <script type="text/javascript">
+            try {
+              var pageTracker = _gat._getTracker("UA-44625984-1");
+            pageTracker._trackPageview();
+            } catch(err) {}
+          </script>
+
 
   </body>
 </html>
