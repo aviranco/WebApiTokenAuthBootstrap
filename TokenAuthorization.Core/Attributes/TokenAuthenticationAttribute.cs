@@ -12,6 +12,10 @@ using TokenAuthorization.Core.Providers;
 
 namespace TokenAuthorization.Core.Attributes
 {
+    /// <summary>
+    /// Authorize the user that request to access the actin with this attribute, based on whether the user's role.
+    /// By default, allows access to authenticated users (Admins or Users).
+    /// </summary>
     [AttributeUsage(AttributeTargets.Method | AttributeTargets.Class, Inherited = true, AllowMultiple = true)]
     public class TokenAuthenticationAttribute : AuthorizationFilterAttribute
     {
@@ -20,6 +24,15 @@ namespace TokenAuthorization.Core.Attributes
         private ITokenProvider _tokenProvider;
 
         private List<ITokenFetcher> _tokenFetchers;
+
+        /// <summary>
+        /// Default C'tor. Allows access to authenticated users (Admins or Users).
+        /// </summary>
+        public TokenAuthenticationAttribute()
+            : this(AccessLevel.User, TokenAuthenticationConfiguration.TokenProvider, TokenAuthenticationConfiguration.TokenFetchers)
+        {
+
+        }
 
         public TokenAuthenticationAttribute(AccessLevel accessLevel, ITokenProvider tokenProvider, List<ITokenFetcher> tokenFetchers)
         {
@@ -82,7 +95,7 @@ namespace TokenAuthorization.Core.Attributes
 
             if (token == null)
             {
-                return false;
+                return _accessLevel == AccessLevel.Anonymous;
             }
 
             return IsTokenAuthorized(token, _accessLevel);

@@ -101,6 +101,7 @@ namespace TokenAuthorization.Core.Providers
             if (metadata != null)
             {
                 metadata.LastAccess = DateTime.Now;
+                _storage.UpdateLastAccess(token, DateTime.Now);
                 _tokenMetadataCacheStrategy.Cache(metadata);
 
                 return metadata;
@@ -111,6 +112,7 @@ namespace TokenAuthorization.Core.Providers
             if (metadata != null)
             {
                 metadata.LastAccess = DateTime.Now;
+                _storage.UpdateLastAccess(token, DateTime.Now);
                 _cache.Add(token, metadata);
                 _tokenMetadataCacheStrategy.Cache(metadata);
 

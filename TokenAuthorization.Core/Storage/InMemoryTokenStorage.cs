@@ -9,7 +9,10 @@ namespace TokenAuthorization.Core.Storage
 
         public TokenMetadata GetMetadata(string token)
         {
-            throw new NotImplementedException();
+            TokenMetadata metadata;
+            bool success = _dictionary.TryGetValue(token, out metadata);
+
+            return success ? metadata : null;
         }
 
         public bool Add(string token, TokenMetadata tokenMetadata)
@@ -21,6 +24,20 @@ namespace TokenAuthorization.Core.Storage
         {
             TokenMetadata metadata;
             return _dictionary.TryRemove(token, out metadata);
+        }
+
+        public void UpdateLastAccess(string token, DateTime accessDate)
+        {
+            TokenMetadata metadata;
+            bool success = _dictionary.TryGetValue(token, out metadata);
+
+            if (success)
+            {
+                metadata.LastAccess = DateTime.Now;
+            }
+
+            // TODO: review if necessary and done well.
+            _dictionary.TryUpdate(token, metadata, metadata);
         }
     }
 }

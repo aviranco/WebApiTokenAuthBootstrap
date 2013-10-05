@@ -12,23 +12,21 @@ namespace TokenAuthorization.Core.Controllers
 {
     public class TokenAuthApiController : ApiController
     {
+        private const string LocalHost = "localhost";
         private dynamic _userData;
         private bool _isNewUserData = false;
         private bool _isDataFetched = false;
-        public bool PossibleDataModified = false;
+        private bool _possibleDataModified = false;
 
-        public new UserMetadata User { get; set; }
-
-        public TokenAuthApiController()
+        public bool PossibleDataModified
         {
-            User = new UserMetadata(DateTime.MinValue, 0, string.Empty, false, UserRole.Unknown);
+            get { return _possibleDataModified; }
         }
-
         public dynamic UserData
         {
             get
             {
-                PossibleDataModified = true;
+                _possibleDataModified = true;
 
                 if (!_isNewUserData)
                 {
@@ -59,13 +57,42 @@ namespace TokenAuthorization.Core.Controllers
             }
             set
             {
-                PossibleDataModified = true;
+                _possibleDataModified = true;
                 _isNewUserData = true;
                 _userData = value;
             }
         }
+        public new UserMetadata User { get; set; }
 
-        private const string LocalHost = "localhost";
+        public TokenAuthApiController()
+        {
+            User = new UserMetadata(DateTime.MinValue, 0, string.Empty, false, UserRole.Unknown);
+        }
+
+        private CookieHeaderValue CreateLoginTokenCookie(int userId, string username, UserRole role, DateTimeOffset expireTime)
+        {
+            var tokenProvider = TokenAuthenticationConfiguration.TokenProvider;
+            var token = tokenProvider.CreateToken(userId, username, role);
+
+            var tokenCookie = new CookieHeaderValue(TokenAuthenticationConfiguration.TokenName, token)
+            {
+                Expires = expireTime,
+                Domain = Request.RequestUri.Host == LocalHost ? null : Request.RequestUri.Host,
+                Path = "/"
+            };
+            return tokenCookie;
+        }
+
+        private CookieHeaderValue CreateLogoutTokenCookie()
+        {
+            var tokenCookie = new CookieHeaderValue(TokenAuthenticationConfiguration.TokenName, string.Empty)
+            {
+                Expires = DateTime.Now.AddDays(-1d),
+                Domain = Request.RequestUri.Host == LocalHost ? null : Request.RequestUri.Host,
+                Path = "/"
+            };
+            return tokenCookie;
+        }
 
         protected virtual HttpResponseMessage Login(int userId, string username, UserRole role)
         {
@@ -86,7 +113,7 @@ namespace TokenAuthorization.Core.Controllers
             var response = Request.CreateResponse(HttpStatusCode.OK);
             var tokenCookie = CreateLogoutTokenCookie();
             response.Headers.AddCookies(new[] { tokenCookie });
-            
+
             if (clearUserData)
             {
                 UserData = null;
@@ -95,29 +122,9 @@ namespace TokenAuthorization.Core.Controllers
             return response;
         }
 
-        private CookieHeaderValue CreateLoginTokenCookie(int userId, string username, UserRole role, DateTimeOffset expireTime)
+        protected virtual HttpResponseMessage Ok()
         {
-            var tokenProvider = TokenAuthenticationConfiguration.TokenProvider;
-            var token = tokenProvider.CreateToken(userId, username, role);
-
-            var tokenCookie = new CookieHeaderValue(TokenAuthenticationConfiguration.TokenName, token)
-                {
-                    Expires = expireTime,
-                    Domain = Request.RequestUri.Host == LocalHost ? null : Request.RequestUri.Host,
-                    Path = "/"
-                };
-            return tokenCookie;
-        }
-
-        private CookieHeaderValue CreateLogoutTokenCookie()
-        {
-            var tokenCookie = new CookieHeaderValue(TokenAuthenticationConfiguration.TokenName, string.Empty)
-            {
-                Expires = DateTime.Now.AddDays(-1d),
-                Domain = Request.RequestUri.Host == LocalHost ? null : Request.RequestUri.Host,
-                Path = "/"
-            };
-            return tokenCookie;
+            return Request.CreateResponse(HttpStatusCode.OK);
         }
 
         protected virtual HttpResponseMessage Error(string message)
