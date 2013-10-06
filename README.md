@@ -1,3 +1,6 @@
+Visit the documented Wiki for detailed examples and information.
+
+
 ## Features
 **Token Based User Authentication**
 User Property inside the TokenAuthApiController (Id, Username, Role, LastAccess).
