@@ -6,13 +6,13 @@ Visit the documented Wiki for detailed examples and information.
 User Property inside the TokenAuthApiController (Id, Username, Role, LastAccess).
 
 **Token Based User Authorization**
-TokenAuthorizeAttribute with Access Level - Public, User, Admin or Anonymous.
+TokenAuthorizeAttribute with `AccessLevel` - Public, User, Admin or Anonymous.
 
 **Built-in Functionality**
-Login(), Logoff(), Error(), Unauthorized() Responses with various overloads.
+`Login()`, `Logoff()`, `Ok()`, `Error()`, `Unauthorized()` Responses with various overloads.
 
 **Shared Dynamic Object Betwen Client and Server**
-UserData Property inside the TokenAuthApiController (Up to size of 4 KB storage).
+`UserData` Property inside the `TokenAuthApiController` (Up to size of 4 KB storage).
 Great for caching data in the client side, especially for thin back-end applications like Single Page Applications.
 
 ## Getting Started
