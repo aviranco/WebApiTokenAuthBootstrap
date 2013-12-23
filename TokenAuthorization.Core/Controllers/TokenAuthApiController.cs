@@ -69,7 +69,7 @@ namespace TokenAuthorization.Core.Controllers
             User = new UserMetadata(DateTime.MinValue, 0, string.Empty, false, UserRole.Unknown);
         }
 
-        private CookieHeaderValue CreateLoginTokenCookie(int userId, string username, UserRole role, DateTimeOffset expireTime)
+        private CookieHeaderValue CreateLoginTokenCookie(string userId, string username, UserRole role, DateTimeOffset expireTime)
         {
             var tokenProvider = TokenAuthenticationConfiguration.TokenProvider;
             var token = tokenProvider.CreateToken(userId, username, role);
@@ -95,6 +95,11 @@ namespace TokenAuthorization.Core.Controllers
         }
 
         protected virtual HttpResponseMessage Login(int userId, string username, UserRole role)
+        {
+            return Login(userId.ToString(),username,role);
+        }
+
+        protected virtual HttpResponseMessage Login(string userId, string username, UserRole role)
         {
             var response = Request.CreateResponse(HttpStatusCode.OK);
             var tokenCookie = CreateLoginTokenCookie(userId, username, role, DateTimeOffset.MaxValue);

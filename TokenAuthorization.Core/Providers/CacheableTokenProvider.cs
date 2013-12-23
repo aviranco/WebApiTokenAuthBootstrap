@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Globalization;
 using TokenAuthorization.Core.Account;
 using TokenAuthorization.Core.Caching;
 using TokenAuthorization.Core.Configuration;
@@ -74,14 +75,19 @@ namespace TokenAuthorization.Core.Providers
 
         public string CreateToken(int userId, string username, UserRole role)
         {
+            return CreateToken(userId.ToString(CultureInfo.InvariantCulture),username,role);
+        }
+
+        public string CreateToken(string userId, string username, UserRole role)
+        {
             var newToken = _generator.GenerateToken();
             var metadata = new TokenMetadata()
-                {
-                    LastAccess = DateTime.Now,
-                    UserId = userId,
-                    Username = username,
-                    Role = role
-                };
+            {
+                LastAccess = DateTime.Now,
+                UserId = userId,
+                Username = username,
+                Role = role
+            };
 
             _storage.Add(newToken, metadata);
             _cache.Add(newToken, metadata);

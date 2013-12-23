@@ -7,6 +7,7 @@ namespace TokenAuthorization.Core.Providers
         bool IsTokenAuthorized(string token, AccessLevel accessLevel);
 
         string CreateToken(int userId, string username, UserRole role);
+        string CreateToken(string userId, string username, UserRole role);
 
         bool DeleteToken(string token);
 
