@@ -50,6 +50,8 @@
     <Compile Include="Account\UserRole.cs" />
     <Compile Include="Attributes\TokenAuthenticationAttribute.cs" />
     <Compile Include="Attributes\UserDataModificationActionFilter.cs" />
+    <Compile Include="Extensions\HttpRequestMessageExtensions.cs" />
+    <Compile Include="Fetchers\Token\HeaderTokenFetcher.cs" />
     <Compile Include="Providers\CacheableTokenProvider.cs" />
     <Compile Include="Fetchers\Data\BaseDataFetcher.cs" />
     <Compile Include="Fetchers\Data\CacheableDataFetcher.cs" />
