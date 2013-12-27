@@ -96,5 +96,7 @@ Login and Logout functionality.
     }
 
 ### Support or Contact
-Having trouble or any questions related to WebAPI Token Auth Bootstrap? Feel free to contact me at:
-admin@AviranCohen.com
+Is there a feature you would like to see? feel free to add it on the 'Pull Requests' section.
+Found a bug or an unintentional behaviour? add it to the 'Issues' section and I will take care of it as soon as possible.
+
+For further questions related to WebAPI Token Auth Bootstrap contact me at admin@AviranCohen.com
