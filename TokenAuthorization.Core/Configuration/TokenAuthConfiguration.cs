@@ -21,8 +21,8 @@ namespace TokenAuthorization.Core.Configuration
         public static bool ValidateInitialization { get { return true; } }
 
         private const string DefaultRolePropertyName = "role";
-        private const string DefaultUnauthorizedMessageName = "You are no authorized to access this resource.";
-        private const string DefaultUnauthorizedMessage = "You are no authorized to access this resource.";
+        private const string DefaultUnauthorizedMessageName = "You are not authorized to access this resource.";
+        private const string DefaultUnauthorizedMessage = "You are not authorized to access this resource.";
         private const string DefaultTokenName = "token";
         private const string DefaultUserCookieName = "user";
 
