@@ -51,7 +51,7 @@ Login and Logout functionality.
             }
 
             // Retrieve the user data from the Data access layer.
-            IDal dal = new ProGamersDal();
+            IDal dal = new WebsiteDal();
             var currentUser = dal.GetUser(user.Username, user.Password);
 
             // If not match found - return error.
@@ -63,13 +63,13 @@ Login and Logout functionality.
             // Cache username and user role at the client side as cookie - accessible by javascript at the client side as json object.
             // Note this data is not secured since the user can access the cookie. Don't store any sensitive information there.
             // In case you save login data in the client side as I did, Server-side validation is a MUST.
-            UserData.username = "Dgandalf";
-            UserData.role = (int) UserRole.User;
+            UserData.username = currentUser.Username;
+            UserData.role = (int) currentUser.Role;
 
             // Creates an access token for this user, stores it in the configured TokenStorage (By default use in-memory storage).
             // You can set different TokenStorage at TokenAuthenticationConfiguration.TokenStorage in your Application_Start 
             // function inside theg lobal.asax file. Additionally, sends cookie with the generated access token to the user.
-            return Login(1, "Dgandalf", UserRole.User);
+            return Login(currentUser.Id, currentUser.Username, currentUser.Role);
 
         }
 
