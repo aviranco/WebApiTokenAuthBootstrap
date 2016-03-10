@@ -1,5 +1,9 @@
-Visit the documented Wiki for detailed examples and information.
+## WebApiTokenAuthBootstrap is no longer maintained by me.
+Feel free to contribute to this project.
 
+for any further information, reach me at: aviran at avirancohen dot com
+
+Visit the documented Wiki for detailed examples and information.
 
 ## Features
 **Token Based User Authentication**
@@ -94,8 +98,3 @@ Login and Logout functionality.
             return Ok();
         }
     }
-
-### Support or Contact
-Found a bug or an unintentional behaviour? add it to the 'Issues' section and I will take care of it as soon as possible.
-
-For feature requests or further questions related to WebAPI Token Auth Bootstrap contact me at admin@AviranCohen.com
