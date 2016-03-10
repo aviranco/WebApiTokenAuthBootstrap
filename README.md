@@ -1,4 +1,4 @@
-## WebApiTokenAuthBootstrap is no longer maintained by me.
+## NO LONGER MAINTAINED BY ME
 Feel free to contribute to this project.
 
 for any further information, reach me at: aviran at avirancohen dot com
