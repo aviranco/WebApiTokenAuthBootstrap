@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Globalization;
 
 namespace TokenAuthorization.Core.Account
 {
@@ -13,6 +14,15 @@ namespace TokenAuthorization.Core.Account
             Role = role;
             IsAuthenticated = isAuthenticated;
             Username = username;
+            UserId = userId.ToString(CultureInfo.InvariantCulture);
+            LastAccess = lastAccess;
+        }
+
+        public UserMetadata(DateTime lastAccess, string userId, string username, bool isAuthenticated, UserRole role)
+        {
+            Role = role;
+            IsAuthenticated = isAuthenticated;
+            Username = username;
             UserId = userId;
             LastAccess = lastAccess;
         }
@@ -20,7 +30,7 @@ namespace TokenAuthorization.Core.Account
         /// <summary>
         /// User Identity (Unique)
         /// </summary>
-        public int UserId { get; private set; }
+        public string UserId { get; private set; }
 
         /// <summary>
         /// The Username of the user.
